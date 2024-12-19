@@ -4,8 +4,8 @@ from flask import Flask, render_template, request
 import serial
 import time
 # Database (Postgres)
-import psycopg2
-from datetime import datetime
+# import psycopg2
+# from datetime import datetime
 
 app = Flask(__name__)
 
@@ -13,31 +13,31 @@ app = Flask(__name__)
 arduino = serial.Serial('COM1', 9600)  
 time.sleep(2)  # Wait for serial connection to stabilize delay(2000)
 
-# Database configuration (replace with your own credentials)
-DB_CONFIG = {
-    'dbname': 'led_status_db',
-    'user': 'your_username',
-    'password': 'your_password',
-    'host': 'localhost',
-    'port': '5432'
-}
+# # Database configuration (replace with your own credentials)
+# DB_CONFIG = {
+#     'dbname': 'led_status_db',
+#     'user': 'your_username',
+#     'password': 'your_password',
+#     'host': 'localhost',
+#     'port': '5432'
+# }
 
-# Function to insert LED status into the database
-def insert_led_status(status):
-    try:
-        connection = psycopg2.connect(**DB_CONFIG)
-        cursor = connection.cursor()
-        timestamp = datetime.now()
-        cursor.execute(
-            "INSERT INTO led_status (status, timestamp) VALUES (%s, %s)",(status, timestamp)
-        )
-        connection.commit()
-    except Exception as e:
-        print(f"Database error: {e}")
-    finally:
-        if connection:
-            cursor.close()
-            connection.close()
+# # Function to insert LED status into the database
+# def insert_led_status(status):
+#     try:
+#         connection = psycopg2.connect(**DB_CONFIG)
+#         cursor = connection.cursor()
+#         timestamp = datetime.now()
+#         cursor.execute(
+#             "INSERT INTO led_status (status, timestamp) VALUES (%s, %s)",(status, timestamp)
+#         )
+#         connection.commit()
+#     except Exception as e:
+#         print(f"Database error: {e}")
+#     finally:
+#         if connection:
+#             cursor.close()
+#             connection.close()
 
 @app.route('/')
 def index():
@@ -51,8 +51,8 @@ def led():
     elif status == 'off':
         arduino.write(b'0')  # Send command to turn LED off
     
-    # Insert the LED status into the database
-    insert_led_status(status)
+    # # Insert the LED status into the database
+    # insert_led_status(status)
     
     return 'OK'
 
